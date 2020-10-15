@@ -112,7 +112,8 @@ namespace Superheros.Controllers
         {
             try
             {
-                db.Superheros.Remove(superhero);
+                var superheroToDelete = db.Superheros.Where(s => s.Id == id).SingleOrDefault();
+                db.Superheros.Remove(superheroToDelete);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
