@@ -4,20 +4,30 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Superheros.Data;
+using Superheros.Models;
 
 namespace Superheros.Controllers
 {
     public class SuperherosController : Controller
     {
+        private readonly ApplicationDbContext db;
+
+        public SuperherosController(ApplicationDbContext _db)
+        {
+            db = _db;
+        }
         // GET: SuperherosController
         public ActionResult Index()
         {
-            return View();
+            var superherosFromDatabase = db.Superheros.ToList();
+            return View(superherosFromDatabase);
         }
 
         // GET: SuperherosController/Details/5
         public ActionResult Details(int id)
         {
+            
             return View();
         }
 
@@ -30,10 +40,13 @@ namespace Superheros.Controllers
         // POST: SuperherosController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Superhero superhero)
         {
             try
             {
+                db.Superheros.Add(superhero);
+                db.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -51,7 +64,7 @@ namespace Superheros.Controllers
         // POST: SuperherosController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Superhero superhero)
         {
             try
             {
@@ -72,10 +85,12 @@ namespace Superheros.Controllers
         // POST: SuperherosController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Superhero superhero)
         {
             try
             {
+                db.Superheros.Remove(superhero);
+                db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
