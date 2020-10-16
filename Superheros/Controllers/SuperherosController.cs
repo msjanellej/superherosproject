@@ -69,8 +69,6 @@ namespace Superheros.Controllers
         {
             try
             {
-                //identify the area the superhero has been updated on the form
-                // update the property that has been selected
                 var superheroToUpdate = db.Superheros.Where(s => s.Id == id).SingleOrDefault();
 
                 if (superhero.SuperheroName != null)
